@@ -1,11 +1,17 @@
 import streamlit as st
 # import pandas as pd
 import joblib
+from huggingface_hub import hf_hub_download
+
+# Download from HF and load
+movies_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="movies.pkl")
+similarity_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="similarity.pkl")
+vectorizer_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="vectorizer.pkl")
 
 # Load saved model components
-pipeline = joblib.load("model/vectorizer.pkl")
-similarity = joblib.load("model/similarity.pkl")
-movies_df = joblib.load("model/movies.pkl")  # Save this DataFrame separately during training
+pipeline = joblib.load(vectorizer_path)
+similarity = joblib.load(similarity_path)
+movies_df = joblib.load(movies_path)  
 
 # Set page config
 st.set_page_config(page_title="🎬 Movie Recommender", layout="centered")
