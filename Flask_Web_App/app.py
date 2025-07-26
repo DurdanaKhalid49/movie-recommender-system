@@ -1,12 +1,19 @@
 from flask import Flask, request, render_template
 import pandas as pd
 import joblib
+from huggingface_hub import hf_hub_download
 
 app = Flask(__name__)
 
-# Load model files
-movies = pd.read_csv('model/movies.csv')
-similarity = joblib.load('model/similarity.pkl')
+# Download from HF and load
+movies_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="movies.pkl")
+similarity_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="similarity.pkl")
+vectorizer_path = hf_hub_download(repo_id="durdanakhalid/movie-recommender-models", filename="vectorizer.pkl")
+
+movies = joblib.load(movies_path)
+similarity = joblib.load(similarity_path)
+vectorizer = joblib.load(vectorizer_path)
+
 
 def recommend(movie, num_recommendations=10):
     movie = movie.lower()
